@@ -25,12 +25,13 @@ SECRET_KEY = "django-insecure-biysb+fkwefzn%&=yu_0^ts_)c215kizse!fe9w&wm0%z4)1%5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
 
 INSTALLED_APPS = [
+    "bbs.apps.BbsConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
