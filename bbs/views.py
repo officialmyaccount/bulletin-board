@@ -1,5 +1,6 @@
 from typing import Any
 from django import http
+from django.db.models.query import QuerySet
 from django.http.response import HttpResponse
 from django.shortcuts import render
 from django.http import HttpResponse
@@ -8,6 +9,7 @@ from django.views import generic
 from django.urls import reverse_lazy
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import PermissionDenied
+from django.db.models import Q
 
 class CreateView(LoginRequiredMixin, generic.edit.CreateView):
     model = Article
@@ -18,7 +20,26 @@ class CreateView(LoginRequiredMixin, generic.edit.CreateView):
         return super(CreateView, self).form_valid(form)
 
 class IndexView(generic.ListView):
-    model = Article
+    # model = Article
+    def get_queryset(self):
+        q_word = self.request.GET.get('query')
+    
+        selected_title = self.request.GET.get('title')
+        selected_article = self.request.GET.get('article')
+    
+        if q_word:
+            if selected_title and selected_article:
+                object_list = Article.objects.filter(
+                    Q(title__icontains=q_word) | Q(content__icontains=q_word)
+                )
+            elif selected_title:
+                object_list = Article.objects.filter(Q(title__icontains=q_word))
+            else:
+                object_list = Article.objects.filter(Q(content__icontains=q_word))
+        else:
+            object_list = Article.objects.all()
+        
+        return object_list
 
 class DetailView(generic.DetailView):
     model = Article
