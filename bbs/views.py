@@ -11,7 +11,7 @@ from django.core.exceptions import PermissionDenied
 
 class CreateView(LoginRequiredMixin, generic.edit.CreateView):
     model = Article
-    fields = ['content', 'title']
+    fields = ['content', 'title',]
     
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -29,8 +29,8 @@ def index(request):
 def detail(request, id):
     return HttpResponse('detail' + str(id))
 
-def create(request):
-    return HttpResponse('create')
+# def create(request):
+#     return HttpResponse('create')
 
 # def update(request, id):
 #     return HttpResponse('update' + str(id))
@@ -46,5 +46,9 @@ class UpdateView(LoginRequiredMixin, generic.edit.UpdateView):
         
         return super(UpdateView, self).dispatch(request, *args, **kwargs)
 
-def delete(request, id):
-    return HttpResponse('delete' + str(id))
+# def delete(request, id):
+#     return HttpResponse('delete' + str(id))
+
+class DeleteView(LoginRequiredMixin, generic.edit.DeleteView):
+    model = Article
+    success_url = reverse_lazy('bbs:index')
