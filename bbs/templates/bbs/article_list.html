@@ -21,4 +21,9 @@
         {% endfor %}
     </table>
 
+    {% if user.is_authenticated %}
+    <p>
+        <a href='{% url "bbs:create" %}' class='btn btn-outline-primary'>新規投稿</a>
+    </p>
+    {% endif %}
 {% endblock %}
